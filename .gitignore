@@ -1,0 +1,24 @@
+# Environment variables (contains sensitive bot tokens and API keys)
+.env
+
+# Google OAuth credentials and saved user tokens
+credentials.json
+token.json
+
+# Python virtual environment and cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+env/
+venv/
+ENV/
+
+# Local downloaded files sandbox
+downloads/
+
+# IDE files
+.vscode/
+.idea/
+.DS_Store
