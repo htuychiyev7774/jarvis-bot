@@ -46,17 +46,17 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🤖 **Jarvis Telegram Bot ishga tushdi!**\n\n"
         "Men sizning shaxsiy yordamchingizman. Quyidagi buyruqlardan foydalanishingiz mumkin:\n\n"
         "📅 **Kalendar buyruqlari:**\n"
-        "• /calendar_list - Yaqin atrofdagi uchrashuvlarni ko'rish\n"
-        "• /calendar_add [xabar] - Yangi uchrashuv qo'shish (Masalan: `Meeting at tomorrow 15:00`)\n\n"
+        "• /calendar_list yoki /calendarlist - Yaqin atrofdagi uchrashuvlarni ko'rish\n"
+        "• /calendar_add yoki /calendaradd [xabar] - Yangi uchrashuv qo'shish\n\n"
         "📧 **E-pochta buyruqlari:**\n"
-        "• /gmail_check - O'qilmagan xatlarni tekshirish va guruhlash\n\n"
+        "• /gmail_check yoki /gmailcheck - O'qilmagan xatlarni tekshirish va guruhlash\n\n"
         "📝 **Notion (Rejalar) buyruqlari:**\n"
-        "• /notion_list - Bajarilmagan vazifalar ro'yxati\n"
-        "• /notion_add [nomi] - Yangi vazifa qo'shish\n"
-        "• /notion_complete [index] - Vazifani bajarilgan deb belgilash\n\n"
+        "• /notion_list yoki /notionlist - Bajarilmagan vazifalar ro'yxati\n"
+        "• /notion_add yoki /notionadd [nomi] - Yangi vazifa qo'shish\n"
+        "• /notion_complete yoki /notioncomplete [index] - Vazifani bajarilgan deb belgilash\n\n"
         "💾 **Google Drive buyruqlari:**\n"
-        "• /drive_list [qidiruv] - Drive fayllarini izlash va ko'rish\n"
-        "• /drive_download [id] - Faylni yuklab olish va yuborish\n"
+        "• /drive_list yoki /drivelist [qidiruv] - Drive fayllarini izlash va ko'rish\n"
+        "• /drive_download yoki /drivedownload [id] - Faylni yuklab olish va yuborish\n"
         "• *Fayl yuborish* - Istalgan faylni Telegram orqali yuborsangiz, uni avtomatik Drive'ga yuklayman."
     )
     await update.message.reply_text(welcome_text, parse_mode="Markdown")
@@ -444,14 +444,14 @@ def main():
     # Register handlers
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CommandHandler("help", start_command))
-    application.add_handler(CommandHandler("calendar_list", calendar_list_command))
-    application.add_handler(CommandHandler("calendar_add", calendar_add_command))
-    application.add_handler(CommandHandler("gmail_check", gmail_check_command))
-    application.add_handler(CommandHandler("notion_list", notion_list_command))
-    application.add_handler(CommandHandler("notion_add", notion_add_command))
-    application.add_handler(CommandHandler("notion_complete", notion_complete_command))
-    application.add_handler(CommandHandler("drive_list", drive_list_command))
-    application.add_handler(CommandHandler("drive_download", drive_download_command))
+    application.add_handler(CommandHandler(["calendar_list", "calendarlist"], calendar_list_command))
+    application.add_handler(CommandHandler(["calendar_add", "calendaradd"], calendar_add_command))
+    application.add_handler(CommandHandler(["gmail_check", "gmailcheck"], gmail_check_command))
+    application.add_handler(CommandHandler(["notion_list", "notionlist"], notion_list_command))
+    application.add_handler(CommandHandler(["notion_add", "notionadd"], notion_add_command))
+    application.add_handler(CommandHandler(["notion_complete", "notioncomplete"], notion_complete_command))
+    application.add_handler(CommandHandler(["drive_list", "drivelist", "drive_list"], drive_list_command))
+    application.add_handler(CommandHandler(["drive_download", "drivedownload"], drive_download_command))
     
     # Register document upload handler
     application.add_handler(MessageHandler(filters.Document.ALL, handle_document_upload))
