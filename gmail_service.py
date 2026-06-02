@@ -79,7 +79,7 @@ def categorize_and_summarize(email_details):
     if config.GEMINI_API_KEY:
         try:
             genai.configure(api_key=config.GEMINI_API_KEY)
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel(config.GEMINI_MODEL)
             
             prompt = (
                 "You are an AI assistant helping to triage emails.\n"

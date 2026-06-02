@@ -45,6 +45,8 @@ NOTION_ENABLED = bool(NOTION_TOKEN and NOTION_DATABASE_ID)
 
 # Gemini API Configuration (Optional)
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+GEMINI_MODEL = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
+
 
 # Google OAuth Paths
 CREDENTIALS_FILE = str(BASE_DIR / 'credentials.json')

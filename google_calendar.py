@@ -34,7 +34,7 @@ def parse_datetime_nl(text):
     if config.GEMINI_API_KEY:
         try:
             genai.configure(api_key=config.GEMINI_API_KEY)
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel(config.GEMINI_MODEL)
             
             prompt = (
                 f"You are a natural language parser helper for a calendar bot.\n"

@@ -407,6 +407,35 @@ async def calendar_reminder_job(context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         logger.error(f"Error in Calendar background scheduler job: {e}")
 
+@owner_only
+async def handle_text_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Handles incoming plain text messages and answers using Gemini AI."""
+    user_message = update.message.text
+    
+    if not config.GEMINI_API_KEY:
+        await update.message.reply_text(
+            "🤖 Kechirasiz, savolingizga javob bera olmayman, chunki **Gemini API kaliti** (`GEMINI_API_KEY`) sozlanmagan.\n"
+            "Railway loyihangizga `GEMINI_API_KEY` o'zgaruvchisini qo'shing."
+        )
+        return
+        
+    await update.message.reply_chat_action("typing")
+    
+    try:
+        import google.generativeai as genai
+        genai.configure(api_key=config.GEMINI_API_KEY)
+        model = genai.GenerativeModel(config.GEMINI_MODEL)
+        
+        response = model.generate_content(
+            f"Siz aqlli, yordamchi AI asistentsiz (nomingiz Jarvis). Foydalanuvchi savoliga o'zbek tilida, do'stona va qisqa javob bering.\n"
+            f"Foydalanuvchi xabari: {user_message}"
+        )
+        
+        await update.message.reply_text(response.text)
+    except Exception as e:
+        logger.error(f"Gemini chat error: {e}")
+        await update.message.reply_text(f"❌ Gemini AI javob berishda xatolik yuz berdi: {e}")
+
 def main():
     """Starts the bot application and registers command/message handlers."""
     # Create the application
@@ -426,6 +455,9 @@ def main():
     
     # Register document upload handler
     application.add_handler(MessageHandler(filters.Document.ALL, handle_document_upload))
+    
+    # Register text message handler
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_text_message))
 
     # Initialize Job Queue for background monitoring
     job_queue = application.job_queue
