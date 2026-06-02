@@ -152,6 +152,9 @@ async def gmail_check_command(update: Update, context: ContextTypes.DEFAULT_TYPE
 @owner_only
 async def notion_list_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Lists pending tasks in the Notion database."""
+    if not config.NOTION_ENABLED:
+        await update.message.reply_text("❌ Notion integratsiyasi sozlanmagan. Railway'da NOTION_TOKEN va NOTION_DATABASE_ID muhit o'zgaruvchilarini o'rnating.")
+        return
     await update.message.reply_text("📝 Notion ro'yxatini yuklamoqdaman...")
     try:
         tasks = notion_service.get_pending_tasks()
@@ -176,6 +179,9 @@ async def notion_list_command(update: Update, context: ContextTypes.DEFAULT_TYPE
 @owner_only
 async def notion_add_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Adds a new task to Notion."""
+    if not config.NOTION_ENABLED:
+        await update.message.reply_text("❌ Notion integratsiyasi sozlanmagan. Railway'da NOTION_TOKEN va NOTION_DATABASE_ID muhit o'zgaruvchilarini o'rnating.")
+        return
     if not context.args:
         await update.message.reply_text("Iltimos, vazifa nomini yozing. Masalan: `/notion_add Kitob o'qish`")
         return
@@ -192,6 +198,9 @@ async def notion_add_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 @owner_only
 async def notion_complete_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Marks a Notion task completed by index number."""
+    if not config.NOTION_ENABLED:
+        await update.message.reply_text("❌ Notion integratsiyasi sozlanmagan. Railway'da NOTION_TOKEN va NOTION_DATABASE_ID muhit o'zgaruvchilarini o'rnating.")
+        return
     if not context.args:
         await update.message.reply_text("Iltimos, bajarilgan reja tartib raqamini yozing. Masalan: `/notion_complete 1`")
         return

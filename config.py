@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
@@ -16,27 +17,31 @@ else:
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_OWNER_ID_RAW = os.getenv('TELEGRAM_OWNER_ID')
 
-# Validate Telegram configuration
+# Validate Telegram configuration — these are mandatory
 if not TELEGRAM_BOT_TOKEN:
-    raise ValueError("CRITICAL: TELEGRAM_BOT_TOKEN environment variable is missing!")
+    print("CRITICAL: TELEGRAM_BOT_TOKEN environment variable is missing!")
+    sys.exit(1)
 
 if not TELEGRAM_OWNER_ID_RAW:
-    raise ValueError("CRITICAL: TELEGRAM_OWNER_ID environment variable is missing!")
+    print("CRITICAL: TELEGRAM_OWNER_ID environment variable is missing!")
+    sys.exit(1)
 
 try:
     TELEGRAM_OWNER_ID = int(TELEGRAM_OWNER_ID_RAW)
 except ValueError:
-    raise ValueError(f"CRITICAL: TELEGRAM_OWNER_ID must be a valid integer, got '{TELEGRAM_OWNER_ID_RAW}'")
+    print(f"CRITICAL: TELEGRAM_OWNER_ID must be a valid integer (your Telegram user ID), got '{TELEGRAM_OWNER_ID_RAW}'")
+    sys.exit(1)
 
-# Notion Configuration
+# Notion Configuration — optional, bot works without these (Notion commands disabled)
 NOTION_TOKEN = os.getenv('NOTION_TOKEN')
 NOTION_DATABASE_ID = os.getenv('NOTION_DATABASE_ID')
 
-# Validate Notion configuration
 if not NOTION_TOKEN:
-    raise ValueError("CRITICAL: NOTION_TOKEN environment variable is missing!")
+    print("WARNING: NOTION_TOKEN not set. Notion integration will be disabled.")
 if not NOTION_DATABASE_ID:
-    raise ValueError("CRITICAL: NOTION_DATABASE_ID environment variable is missing!")
+    print("WARNING: NOTION_DATABASE_ID not set. Notion integration will be disabled.")
+
+NOTION_ENABLED = bool(NOTION_TOKEN and NOTION_DATABASE_ID)
 
 # Gemini API Configuration (Optional)
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
@@ -44,6 +49,9 @@ GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
 # Google OAuth Paths
 CREDENTIALS_FILE = str(BASE_DIR / 'credentials.json')
 TOKEN_FILE = str(BASE_DIR / 'token.json')
+
+# Google Token from env var (for Railway deployment)
+GOOGLE_TOKEN_JSON = os.getenv('GOOGLE_TOKEN_JSON')
 
 # Storage sandbox for downloads
 DOWNLOADS_DIR = BASE_DIR / 'downloads'
